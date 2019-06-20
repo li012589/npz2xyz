@@ -27,9 +27,6 @@ if args.fixy:
     print("fix y axis!")
     argOne[:,:,1] = argOne[:,:,1]-23.222
 
-import pdb
-pdb.set_trace()
-
 if args.join:
     with open(args.xyz,"w") as f:
         for n in range(args.batch):
