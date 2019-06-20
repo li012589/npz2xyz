@@ -10,7 +10,9 @@ parser.add_argument("-smile",default=None,help = "Smile expression of the molecu
 parser.add_argument("-batch",default=100,type=int,help = "batch size of configurations to convert")
 parser.add_argument("-scaling",default=10,type=float,help = "scaling factor of npz data, default is for nm to ångströms")
 parser.add_argument("-join",action='store_true',help="store all into one xyz file")
-parser.add_argument("-fixy",action='store_true',help="fix y axis")
+parser.add_argument("-fixx",default=0,type=float,help="fix x axis")
+parser.add_argument("-fixy",default=23.222,type=float,help="fix y axis")
+parser.add_argument("-fixz",default=0,type=float,help="fix z axis")
 args = parser.parse_args()
 
 smiles = []
@@ -23,9 +25,8 @@ N = len(smiles)
 with np.load(args.npz) as data:
     argOne = data[args.name].reshape(-1,N,3)*args.scaling
 
-if args.fixy:
-    print("fix y axis!")
-    argOne[:,:,1] = argOne[:,:,1]-23.222
+fixs = np.array([args.fixx,args.fixy,args.fixz])
+argOne[:,:] = argOne[:,:]-fixs
 
 if args.join:
     with open(args.xyz,"w") as f:
